@@ -1,4 +1,7 @@
 import styled from "styled-components";
+import { formatCurrency } from "../../utils/helpers";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { deleteCabin } from "../../services/apiCabins";
 
 const TableRow = styled.div`
   display: grid;
@@ -38,3 +41,57 @@ const Discount = styled.div`
   font-weight: 500;
   color: var(--color-green-700);
 `;
+
+
+const CabinRow = ({ cabin }) => {
+  const { name, maxCapacity, regularPrice, discount, image, id: cabinId } = cabin;
+  const  queryClient = useQueryClient();
+
+  const {isLoading: isDeleting, mutate} = useMutation({
+    mutationFn: deleteCabin,
+    onSuccess: () => {
+      alert('Cabin successfully deleted')
+      queryClient.invalidateQueries(["cabins"]);
+    },
+    onError: (err) => alert(err.message),
+    // onError: (err, cabin, context) => {
+    //   queryClient.setQueryData(["cabins"], context.previousValue);
+    })
+
+
+
+
+  
+    // mutationKey: ["cabins", cabin.id],
+    // mutationFn: deleteCabin,
+    // onMutate: async (cabin) => {
+    //   await queryClient.cancelQueries(["cabins"]);
+    //   const previousValue = queryClient.getQueryData(["cabins"]);
+    //   queryClient.setQueryData(["cabins"], (old) => {
+    //     return old.filter((c) => c.id !== cabin.id);
+    //   });
+    //   return { previousValue };
+    // },
+    // onError: (err, cabin, context) => {
+    //   queryClient.setQueryData(["cabins"], context.previousValue);
+    // },
+    // onSettled: () => {
+    //   queryClient.invalidateQueries(["cabins"]);
+    // },
+  // });
+
+
+  return (
+    // <div>Row</div>
+    <TableRow role="row">
+      {image ? <Img src={image} alt={name} /> : <div></div> }
+      <Cabin>{name}</Cabin>
+      Fits up to: {maxCapacity} guests
+      <Price>{formatCurrency(regularPrice)}</Price>
+      <Discount>${discount}</Discount>
+      <button onClick={() => mutate(cabinId)} disabled={isDeleting}>Delete</button>
+    </TableRow>
+  );
+}
+
+export default CabinRow
