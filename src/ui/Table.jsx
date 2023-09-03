@@ -58,3 +58,9 @@ const Empty = styled.p`
   text-align: center;
   margin: 2.4rem;
 `;
+
+ function Table({ children }) {
+  return <StyledTable>{children}</StyledTable>;
+ }
+
+ export default Table;

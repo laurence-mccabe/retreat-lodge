@@ -26,4 +26,9 @@ Form.defaultProps = {
   type: "regular",
 };
 
+/* Form.defaultProps = {
+  type: "regular",
+}; */
+
+
 export default Form;
