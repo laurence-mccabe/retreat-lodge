@@ -7,18 +7,20 @@ import { HiPencil, HiSquare2Stack, HiTrash } from 'react-icons/hi2'
 import { useCreateCabin } from './useCreateCabin'
 import Modal from '../../ui/Modal'
 import ConfirmDelete from '../../ui/ConfirmDelete'
+import Table from '../../ui/Table'
+import Menus from '../../ui/Menus'
 
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
+// const TableRow = styled.div`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
+//   padding: 1.4rem 2.4rem;
 
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`
+//   &:not(:last-child) {
+//     border-bottom: 1px solid var(--color-grey-100);
+//   }
+// `
 
 const Img = styled.img`
   display: block;
@@ -71,7 +73,7 @@ const CabinRow = ({ cabin }) => {
   return (
     // <div>Row</div>
 
-    <TableRow role="row">
+    <Table.Row role="row">
       {image ? <Img src={image} alt={name} /> : <div></div>}
       <Cabin>{name}</Cabin>
       Fits up to: {maxCapacity} guests
@@ -92,20 +94,32 @@ const CabinRow = ({ cabin }) => {
           </Modal.Window>
 
           <Modal.Open opens="delete">
-            <button >
+            <button>
               <HiTrash />
             </button>
           </Modal.Open>
           <Modal.Window name="delete">
-            <ConfirmDelete 
-            resourceName="cabin" 
-            disabled={isDeleting} 
-            onConfirm={() => deleteCabin(id)}
+            <ConfirmDelete
+              resourceName="cabin"
+              disabled={isDeleting}
+              onConfirm={() => deleteCabin(id)}
             />
           </Modal.Window>
         </Modal>
+
+        <Menus.Menu>
+          <Menus.Toggle id={id} />
+
+          <Menus.List id={id}>
+            <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+              Duplicate
+            </Menus.Button>
+            <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+            <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+          </Menus.List>
+        </Menus.Menu>
       </div>
-    </TableRow>
+    </Table.Row>
   )
 }
 
