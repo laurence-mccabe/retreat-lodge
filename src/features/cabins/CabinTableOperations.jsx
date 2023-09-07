@@ -1,5 +1,6 @@
 import TableOperations from '../../ui/TableOperations'
 import Filter from '../../ui/Filter'
+import SortBy from '../../ui/SortBy'
 
 const CabinTableOperations = () => {
   return (
@@ -21,6 +22,18 @@ const CabinTableOperations = () => {
           },
         ]}
       />
+
+      <SortBy options={[
+        { value: 'name-asc', label: 'Sort by name (A_Z)'},
+        { value: 'name-desc', label: 'Sort by name (Z_A)'},
+        { value: 'regularPrice-asc', label: 'Sort by price (low first)'},
+        { value: 'regularPrice-desc', label: 'Sort by price (high first)'},
+        { value: 'maxCapacity-asc', label: 'Sort by Capacity (low first)'},
+        { value: 'maxCapacity-desc', label: 'Sort by Capacity (high first)'},
+
+
+
+        ]}/>
     </TableOperations>
   )
 }
