@@ -5,7 +5,7 @@ const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
   background-color: var(--color-grey-0);
   box-shadow: var(--shadow-sm);
-  border-radius: var(--border-radius-sm);
+  border-radius: var(--border-radius-sm)a;
   padding: 0.4rem;
   display: flex;
   gap: 0.4rem;
@@ -14,6 +14,10 @@ const StyledFilter = styled.div`
 const FilterButton = styled.button`
   background-color: var(--color-grey-0);
   border: none;
+
+  &:focus {
+    outline: none; /* Remove the default focus outline */
+  }
 
   ${(props) =>
     props.active &&
@@ -37,6 +41,8 @@ const FilterButton = styled.button`
 
 const Filter = ({ filterField, options }) => {
   const [searchParams, setSearchParams] = useSearchParams()
+  const currentFilterValue = searchParams.get(filterField) || options.at(0).value
+  console.log('currentFilterValue =>', currentFilterValue)
 
   const handleClick = (value) => {
     searchParams.set('discount', value)
@@ -49,6 +55,7 @@ const Filter = ({ filterField, options }) => {
         <FilterButton
           onClick={() => handleClick(option.value)}
           key={option.value}
+          active={currentFilterValue === option.value}
         >
           {option.label}
         </FilterButton>

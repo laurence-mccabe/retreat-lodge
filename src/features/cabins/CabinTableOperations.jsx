@@ -5,7 +5,7 @@ const CabinTableOperations = () => {
   return (
     <TableOperations>
       <Filter
-        filterfield="discount"
+        filterField="discount"
         options={[
           {
             value: 'all',
