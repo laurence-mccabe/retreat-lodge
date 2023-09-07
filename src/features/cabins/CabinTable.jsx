@@ -57,7 +57,7 @@ const CabinTable = () => {
       </Table.Header>
 
       <Table.Body
-        data={cabins}
+        data={filteredCabins}
         render={((cabin) => (
           <CabinRow key={cabin.id} cabin={cabin} />
         ))}
