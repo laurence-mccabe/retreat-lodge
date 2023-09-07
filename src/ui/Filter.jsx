@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import { useSearchParams } from 'react-router-dom'
-
+// CabinTableOperations
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
   background-color: var(--color-grey-0);
@@ -35,7 +35,7 @@ const FilterButton = styled.button`
   }
 `
 
-const Filter = () => {
+const Filter = ({ filterField, options }) => {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const handleClick = (value) => {
@@ -45,13 +45,14 @@ const Filter = () => {
 
   return (
     <StyledFilter>
-      <FilterButton onClick={() => handleClick('all')}>All</FilterButton>
-      <FilterButton onClick={() => handleClick('no-discount')}>
-        no discount
-      </FilterButton>
-      <FilterButton onClick={() => handleClick('with-discount')}>
-        with discount
-      </FilterButton>
+      {options.map((option) => (
+        <FilterButton
+          onClick={() => handleClick(option.value)}
+          key={option.value}
+        >
+          {option.label}
+        </FilterButton>
+      ))}
     </StyledFilter>
   )
 }
