@@ -15,20 +15,20 @@ import { useSearchParams } from 'react-router-dom'
 //   overflow: hidden;
 // `
 
-const TableHeader = styled.header`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
+// const TableHeader = styled.header`
+//   display: grid;
+//   grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
+//   column-gap: 2.4rem;
+//   align-items: center;
 
-  background-color: var(--color-grey-50);
-  border-bottom: 1px solid var(--color-grey-100);
-  text-transform: uppercase;
-  letter-spacing: 0.4px;
-  font-weight: 600;
-  color: var(--color-grey-600);
-  padding: 1.6rem 2.4rem;
-`
+//   background-color: var(--color-grey-50);
+//   border-bottom: 1px solid var(--color-grey-100);
+//   text-transform: uppercase;
+//   letter-spacing: 0.4px;
+//   font-weight: 600;
+//   color: var(--color-grey-600);
+// //   padding: 1.6rem 2.4rem;
+// `
 
 const CabinTable = () => {
   const { isLoading, cabins } = useCabins()
@@ -36,6 +36,7 @@ const CabinTable = () => {
 
   if (isLoading) return <Spinner />
 
+  // filter cabins
   const filterValue = searchParams.get('discount') || 'all'
   console.log('filterValue =>', filterValue)
 
@@ -43,6 +44,15 @@ const CabinTable = () => {
   if (filterValue === 'all') filteredCabins = cabins
   if (filterValue === 'no-discount') filteredCabins = cabins.filter(cabin => cabin.discount === 0)
   if (filterValue === 'with-discount') filteredCabins = cabins.filter(cabin => cabin.discount > 0)
+
+  // sort cabins
+  const sortBy = searchParams.get('sortBy') || 'startDate-asc'
+  const [field, direction] = sortBy.split('-')
+  const sortedCabins = filteredCabins.sort((a, b) => {
+    if (direction === 'asc') return a[field] - b[field]
+    if (direction === 'desc') return b[field] - a[field]
+  })
+
 
   return (
     <Menus>
@@ -57,7 +67,7 @@ const CabinTable = () => {
       </Table.Header>
 
       <Table.Body
-        data={filteredCabins}
+        data={sortedCabins}
         render={((cabin) => (
           <CabinRow key={cabin.id} cabin={cabin} />
         ))}
