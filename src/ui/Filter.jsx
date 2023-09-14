@@ -45,7 +45,8 @@ const Filter = ({ filterField, options }) => {
   console.log('currentFilterValue =>', currentFilterValue)
 
   const handleClick = (value) => {
-    searchParams.set('discount', value)
+    searchParams.set(filterField, value)
+    searchParams.set('page', '1');
     setSearchParams(searchParams)
   }
 
