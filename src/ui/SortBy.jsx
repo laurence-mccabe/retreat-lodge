@@ -3,9 +3,9 @@ import Select from './Select'
 
 const SortBy = ({ options }) => {
   const [searchParams, setSearchParams] = useSearchParams()
-  const sortBy = searchParams.get('sortBy') || ''
+  const SortBy = searchParams.get('sortBy') || options.at(0).value
 
-  const handleChange = (e) => {
+  function handleChange(e) {
     searchParams.set('sortBy', e.target.value)
     setSearchParams(searchParams)
   }
@@ -15,9 +15,8 @@ const SortBy = ({ options }) => {
       options={options}
       type="white"
       onChange={handleChange}
-      value={sortBy}
+      value={SortBy}
     />
   )
 }
-
 export default SortBy

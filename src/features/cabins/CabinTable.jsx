@@ -4,7 +4,7 @@ import { useCabins } from './useCabins'
 import Table from '../../ui/Table'
 import Menus from '../../ui/Menus'
 import { useSearchParams } from 'react-router-dom'
-
+import Empty from '../../ui/Empty'
 // const Table = styled.div`
 //   border: 1px solid var(--color-grey-200);
 
@@ -26,7 +26,7 @@ import { useSearchParams } from 'react-router-dom'
 //   letter-spacing: 0.4px;
 //   font-weight: 600;
 //   color: var(--color-grey-600);
-//   padding: 1.6rem 2.4rem;
+// //   padding: 1.6rem 2.4rem;
 // `
 
 const CabinTable = () => {
@@ -34,22 +34,24 @@ const CabinTable = () => {
   const [searchParams] = useSearchParams()
 
   if (isLoading) return <Spinner />
+  if (!cabins.length) return <Empty resource="cabins"/>
 
-  //1: Filter value
+  // filter cabins
   const filterValue = searchParams.get('discount') || 'all'
-  // console.log(filterValue)
+  console.log('filterValue =>', filterValue)
 
   let filteredCabins;
-  if (filterValue === 'all') {filteredCabins = cabins}
-  if (filterValue === 'no-discount') {filteredCabins = cabins.filter(cabin => cabin.discount === 0)}
-  if (filterValue === 'with-discount') {filteredCabins = cabins.filter(cabin => cabin.discount > 0)}
+  if (filterValue === 'all') filteredCabins = cabins
+  if (filterValue === 'no-discount') filteredCabins = cabins.filter(cabin => cabin.discount === 0)
+  if (filterValue === 'with-discount') filteredCabins = cabins.filter(cabin => cabin.discount > 0)
 
-  // 2: SORT 
+  // sort cabins
   const sortBy = searchParams.get('sortBy') || 'startDate-asc'
   const [field, direction] = sortBy.split('-')
-  const modifier = direction === 'asc' ? 1 : -1
-  const sortedCabins = filteredCabins.sort((a, b) => (a[field] - b[field]) * modifier)
-  console.log(modifier)
+  const sortedCabins = filteredCabins.sort((a, b) => {
+    if (direction === 'asc') return a[field] - b[field]
+    if (direction === 'desc') return b[field] - a[field]
+  })
 
 
   return (

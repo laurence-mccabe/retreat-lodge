@@ -1,13 +1,17 @@
-import styled from "styled-components";
-import BookingDataBox from "../../features/bookings/BookingDataBox";
+import styled from 'styled-components'
+import BookingDataBox from '../../features/bookings/BookingDataBox'
 
-import Row from "../../ui/Row";
-import Heading from "../../ui/Heading";
-import ButtonGroup from "../../ui/ButtonGroup";
-import Button from "../../ui/Button";
-import ButtonText from "../../ui/ButtonText";
+import Row from '../../ui/Row'
+import Heading from '../../ui/Heading'
+import ButtonGroup from '../../ui/ButtonGroup'
+import Button from '../../ui/Button'
+import ButtonText from '../../ui/ButtonText'
 
-import { useMoveBack } from "../../hooks/useMoveBack";
+import { useMoveBack } from '../../hooks/useMoveBack'
+import { useBooking } from '../bookings/useBooking'
+import Spinner from '../../ui/Spinner'
+import { useEffect, useState } from 'react'
+import CheckBox from '../../ui/CheckBox'
 
 const Box = styled.div`
   /* Box */
@@ -15,12 +19,18 @@ const Box = styled.div`
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
   padding: 2.4rem 4rem;
-`;
+`
 
 function CheckinBooking() {
-  const moveBack = useMoveBack();
+  const [confirmPaid, setConfirmPaid] = useState(false)
+  const { booking, isLoading } = useBooking()
+  const moveBack = useMoveBack()
 
-  const booking = {};
+  useEffect(() => setConfirmPaid(booking?.isPaid ?? false), 
+    [booking?.isPaid]);
+  
+
+  if (isLoading) return <Spinner />
 
   const {
     id: bookingId,
@@ -29,7 +39,8 @@ function CheckinBooking() {
     numGuests,
     hasBreakfast,
     numNights,
-  } = booking;
+    isPaid,
+  } = booking
 
   function handleCheckin() {}
 
@@ -41,6 +52,15 @@ function CheckinBooking() {
       </Row>
 
       <BookingDataBox booking={booking} />
+      <Box>
+        <CheckBox
+          value={confirmPaid}
+          onChange={() => setConfirmPaid((confirm) => !confirm)}
+          id="confirm"
+        >
+          I confirm that {guests.fullName} has paid the total amount
+        </CheckBox>
+      </Box>
 
       <ButtonGroup>
         <Button onClick={handleCheckin}>Check in booking #{bookingId}</Button>
@@ -49,7 +69,7 @@ function CheckinBooking() {
         </Button>
       </ButtonGroup>
     </>
-  );
+  )
 }
 
-export default CheckinBooking;
+export default CheckinBooking
