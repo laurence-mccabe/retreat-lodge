@@ -10,11 +10,10 @@ export const useUpdateUser = () => {
     const { mutate: updateUser, isLoading: isUpdating } = useMutation({
         // mutationFn: mutateData => createEditCabin(mutateData, editId),
         mutationFn: updateCurrentUser,
-        onSuccess: ({data}) => {
-            console.log(data)
+        onSuccess: ({user}) => {
           toast.success('User account successfully updated.')
-        //   queryClient.setQueryData('user', user)
-          queryClient.invalidateQueries({queryKey: ['user']})
+          queryClient.setQueryData(['user'], user)
+        //   queryClient.invalidateQueries({queryKey: ['user']})
           reset()
         },
         onError: (err) => toast.error(err.message),
