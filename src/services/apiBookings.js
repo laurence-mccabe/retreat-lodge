@@ -92,7 +92,8 @@ export async function getStaysTodayActivity() {
     )
     .order('created_at')
 
-  // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
+  // The above is equivalent to the below. But by querying using the above, we only download the data we actually need, 
+  // using the below method, first we would need to get ALL bookings ever created  from the db before running the below
   // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
   // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
 
