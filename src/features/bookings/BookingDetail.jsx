@@ -16,8 +16,8 @@ import { HiArrowUpOnSquare } from 'react-icons/hi2'
 import useCheckout from '../check-in-out/useCheckout'
 import Modal from '../../ui/Modal'
 import ConfirmDelete from '../../ui/ConfirmDelete'
-import { deleteBooking } from '../../services/apiBookings'
 import useDeleteBooking from './useDeleteBooking'
+import Empty from '../../ui/Empty'
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -33,6 +33,7 @@ function BookingDetail() {
   const { deleteBooking, isDeleting } = useDeleteBooking()
 
   if (isLoading) return <Spinner />
+  if (!booking) return <Empty resource="booking" />
 
   const { status, id: bookingId } = booking
 
